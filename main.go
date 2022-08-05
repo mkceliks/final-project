@@ -24,7 +24,7 @@ func main() {
 	// service.InsertProduct(*product)
 
 	r.HandleFunc("/products", service.GetProducts).Methods("GET")
-	r.HandleFunc("/add", service.InsertProduct).Methods("POST")
+	r.HandleFunc("/addProduct", service.InsertProduct).Methods("POST")
 	r.HandleFunc("/cart/{id}", service.AddToCart).Methods("POST")
 	r.HandleFunc("/cart", service.GetCartItems).Methods("GET")
 	r.HandleFunc("/deleteCart/{id}", service.DeleteOneItemFromCart).Methods("DELETE")
