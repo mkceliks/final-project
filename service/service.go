@@ -79,8 +79,8 @@ func AddToCart(w http.ResponseWriter, r *http.Request) {
 		total_price := floatVar * float64(cart.Quantity) //total price of the product
 		fmt.Printf("\n%d", cart.Quantity)
 
-		if db.DB.QueryRow("SELECT * FROM cart WHERE productid = $1", id).Scan(&cart.ProductID) == sql.ErrNoRows {
-			result, err := db.DB.Exec("INSERT INTO cart(productid, quantity, total_price, total_discount) VALUES($1, $2, $3, $4)", id, cart.Quantity, total_price, cart.Discount)
+		if db.DB.QueryRow("SELECT * FROM cart WHERE product_id = $1", id).Scan(&cart.ProductID) == sql.ErrNoRows {
+			result, err := db.DB.Exec("INSERT INTO cart(product_id, quantity, total_price, total_discount) VALUES($1, $2, $3, $4)", id, cart.Quantity, total_price, cart.Discount)
 			if err != nil {
 				log.Fatal(err)
 			}
@@ -91,7 +91,7 @@ func AddToCart(w http.ResponseWriter, r *http.Request) {
 			w.Write([]byte("Product added to cart successfully"))
 		} else {
 			fmt.Printf("\n%f", float64(cart.Quantity))
-			result, err := db.DB.Exec("UPDATE cart SET quantity = $1, total_price = $2, total_discount = $3 WHERE productid = $4", cart.Quantity, total_price, cart.Discount, id)
+			result, err := db.DB.Exec("UPDATE cart SET quantity = $1, total_price = $2, total_discount = $3 WHERE product_id = $4", cart.Quantity, total_price, cart.Discount, id)
 			if err != nil {
 				log.Fatal(err)
 			}
@@ -135,7 +135,7 @@ func GetCartItems(w http.ResponseWriter, r *http.Request) {
 
 func DeleteCartItem(w http.ResponseWriter, r *http.Request) {
 	id := mux.Vars(r)["id"]
-	result, err := db.DB.Exec("DELETE FROM cart WHERE productid = $1", id)
+	result, err := db.DB.Exec("DELETE FROM cart WHERE product_id = $1", id)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -164,10 +164,11 @@ func DeleteOneItemFromCart(w http.ResponseWriter, r *http.Request) {
 		}
 		fmt.Printf("\n%s", product)
 
-		row := db.DB.QueryRow("SELECT * FROM cart WHERE productid = $1", id).Scan(&cart.ID, &cart.ProductID, &cart.Quantity, &cart.Price, &cart.Discount)
+		row := db.DB.QueryRow("SELECT * FROM cart WHERE product_id = $1", id).Scan(&cart.ID, &cart.ProductID, &cart.Quantity, &cart.Price, &cart.Discount)
 		switch {
 		case row == sql.ErrNoRows:
 			fmt.Println("No rows found")
+			w.Write([]byte("No Rows Found"))
 			return
 		case row != nil:
 			log.Fatal(row)
@@ -179,7 +180,7 @@ func DeleteOneItemFromCart(w http.ResponseWriter, r *http.Request) {
 		newQuantity := cart.Quantity - 1
 		fmt.Printf("\n%d", newQuantity)
 		if newQuantity <= 0 {
-			result, err := db.DB.Exec("DELETE FROM cart WHERE productid = $1", id)
+			result, err := db.DB.Exec("DELETE FROM cart WHERE product_id = $1", id)
 			if err != nil {
 				log.Fatal(err)
 			}
@@ -190,7 +191,7 @@ func DeleteOneItemFromCart(w http.ResponseWriter, r *http.Request) {
 			w.Write([]byte("There is no item more in the cart"))
 			return
 		} else {
-			result, err := db.DB.Exec("UPDATE cart SET quantity = $1, total_price = $2, total_discount = $3 WHERE productid = $4", newQuantity, total_price, cart.Discount, id)
+			result, err := db.DB.Exec("UPDATE cart SET quantity = $1, total_price = $2, total_discount = $3 WHERE product_id = $4", newQuantity, total_price, cart.Discount, id)
 			if err != nil {
 				log.Fatal(err)
 			}
