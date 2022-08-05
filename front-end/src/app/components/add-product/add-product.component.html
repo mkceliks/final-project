@@ -1,0 +1,43 @@
+<div class="content py-lg-5" >
+    <br>
+      <div class="col-md-12 p-5">
+          <div class="card" >
+              <div style="text-align: center;" class="card-header">
+                  <h5 class="title">
+                      Welcome to Product Add Form Page
+                  </h5>
+                  
+              </div>
+         </div>
+         <br>
+
+          <form [formGroup]="productAddForm" class="row g-3 mb-3">
+              <div class="col-md-6">
+                <label for="Name" class="form-label">Product Name</label>
+                <input placeholder="Product Name" type="text" class="form-control" name="Name" id="Name" formControlName="Name" required>
+              </div>
+              <div  class="col-md-6">
+                  <label for="Description" class="form-label">Description</label>
+                  <input placeholder="Description" type="text" class="form-control" name="Description" id="Description" formControlName="Description" required>
+                </div>
+
+                <div  class="col-md-6">
+                    <label for="Price" class="form-label">Price</label>
+                    <input placeholder="Price" type="number" class="form-control" name="Price" id="Price" formControlName="Price" required>
+                  </div>
+
+                  <div  class="col-md-6">
+                    <label for="Discount" class="form-label">Discount</label>
+                    <input placeholder="Discount" type="number" class="form-control" name="Discount" id="Discount" formControlName="Discount" required>
+                  </div>
+                  <div  class="col-md-6">
+                    <label for="Tax" class="form-label">Tax</label>
+                    <input placeholder="Tax" type="number" class="form-control" name="Tax" id="Tax" formControlName="Tax" required>
+                  </div>
+              <div style="text-align: center;" class="col-12">
+                <button class="btn btn-primary" (click)="addProduct()">Add Product to the system</button>
+              </div>
+            </form>
+
+      </div>
+  </div>

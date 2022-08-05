@@ -1,0 +1,48 @@
+<section class="py-5 text-center container">
+    <div class="row py-lg-5">
+      <div class="col-lg-6 col-md-8 mx-auto">
+        <h1 class="fw-light">You can reach all the products in your cart here.</h1>
+        <p
+          *ngIf="cartItems.length > 0"
+          class="lead text-muted"
+        >
+          There are
+          <span *ngIf="cartItems.length > 0" style="font-weight: bold"
+            >{{ cartItems.length }} products</span>
+          in the cart.
+        </p>
+      </div>
+    </div>
+  </section>
+  
+  <div *ngIf="cartItems.length > 0" style="border: solid 2px rgb(255, 255, 255); border-radius: 10px;box-shadow:0px 0px 7px 3px rgba(0, 0, 0, 0.308);" class="album py-5 bg-light mb-5">
+    <div class="container">
+      <h1 style="text-align: center" class="mb-4">Your Cart</h1>
+      <div class="row row-cols-1  row-cols-md-12 g-3">
+        <div *ngFor="let cart of cartItems" class="col">
+          <div
+          style="border:solid 15px rgba(255, 255, 255, 0.284);border-radius:7px;box-shadow:0px 0px 7px 6px rgba(126, 126, 126, 0.239);"
+            class="card shadow-sm"
+          >
+  
+            <div class="card-body">
+              <p class="card-text">{{ cart.ProductID }}</p>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                  <button type="button" class="btn btn-sm btn-outline-secondary">
+                    Add to Cart
+                  </button>
+                  <button type="button" class="btn btn-sm btn-outline-secondary">
+                    View Details
+                  </button>
+                </div>
+                <small class="text-muted"
+                  >{{ cart.Quantity }} <span class="fa-solid fa-star"></span
+                ></small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
