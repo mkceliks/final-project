@@ -15,20 +15,16 @@ func main() {
 
 	r := mux.NewRouter()
 
-	// product := &models.Product{
-	// 	Name:        "Product 1",
-	// 	Description: "Description 1",
-	// 	Price:       1.99,
-	// }
+	r.HandleFunc("/products", service.GetProducts).Methods("GET")               // GET all products
+	r.HandleFunc("/cart", service.GetCartItems).Methods("GET")                  // GET cart items
+	r.HandleFunc("/getProductById/{id}", service.GetProductById).Methods("GET") // GET product by id
 
-	// service.InsertProduct(*product)
+	r.HandleFunc("/addProduct", service.InsertProduct).Methods("POST")               // POST a new product to the database. Requires a JSON body with the product details ( Quantity ).
+	r.HandleFunc("/addToCart/{id}", service.AddToCart).Methods("POST")               // add to cart
+	r.HandleFunc("/addOneItemToCart/{id}", service.AddOneItemToCart).Methods("POST") // POST one item to cart
 
-	r.HandleFunc("/products", service.GetProducts).Methods("GET")
-	r.HandleFunc("/addProduct", service.InsertProduct).Methods("POST")
-	r.HandleFunc("/cart/{id}", service.AddToCart).Methods("POST")
-	r.HandleFunc("/cart", service.GetCartItems).Methods("GET")
-	r.HandleFunc("/deleteCart/{id}", service.DeleteOneItemFromCart).Methods("DELETE")
-	r.HandleFunc("/deleteAllCart/{id}", service.DeleteCartItem).Methods("DELETE")
+	r.HandleFunc("/deleteOneItemFromCart/{id}", service.DeleteOneItemFromCart).Methods("DELETE") // DELETE one item from cart
+	r.HandleFunc("/deleteAllCart/{id}", service.DeleteCartItem).Methods("DELETE")                // DELETE all cart items
 
 	handler := cors.AllowAll().Handler(r)
 	fmt.Printf("Server is running on port 8080")
