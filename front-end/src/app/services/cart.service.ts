@@ -19,4 +19,21 @@ export class CartService {
       return this.httpClient.get<Cart[]>(newPath);
   
     }
+
+    addCartItem(id:number): Observable<Cart> {
+        
+        let newPath = this.apiUrl + 'addOneItemToCart/' + id;
+    
+        return this.httpClient.post<Cart>(newPath,id);
+    
+      }
+
+      deleteCartItem(id:number): Observable<Cart> {
+
+        let newPath = this.apiUrl + 'deleteOneItemFromCart/' + id;
+
+        return this.httpClient.delete<Cart>(newPath);
+
+      }
+
 }

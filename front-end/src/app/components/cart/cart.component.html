@@ -15,34 +15,36 @@
     </div>
   </section>
   
-  <div *ngIf="cartItems.length > 0" style="border: solid 2px rgb(255, 255, 255); border-radius: 10px;box-shadow:0px 0px 7px 3px rgba(0, 0, 0, 0.308);" class="album py-5 bg-light mb-5">
+  <div *ngIf="cartItems.length > 0" style="border: solid 2px rgb(255, 255, 255); border-radius: 10px;box-shadow:0px 0px 7px 3px rgba(0, 0, 0, 0.308);text-align: center;" class="album py-5 bg-light mb-5" >
     <div class="container">
       <h1 style="text-align: center" class="mb-4">Your Cart</h1>
       <div class="row row-cols-1  row-cols-md-12 g-3">
-        <div *ngFor="let cart of cartItems" class="col">
+        <div *ngFor="let cart of cartItems; let index = index" class="col">
           <div
           style="border:solid 15px rgba(255, 255, 255, 0.284);border-radius:7px;box-shadow:0px 0px 7px 6px rgba(126, 126, 126, 0.239);"
             class="card shadow-sm"
           >
   
             <div class="card-body">
-              <p class="card-text">{{ cart.ProductID }}</p>
-              <div class="d-flex justify-content-between align-items-center">
-                <div class="btn-group">
-                  <button type="button" class="btn btn-sm btn-outline-secondary">
-                    Add to Cart
-                  </button>
-                  <button type="button" class="btn btn-sm btn-outline-secondary">
-                    View Details
-                  </button>
-                </div>
-                <small class="text-muted"
-                  >{{ cart.Quantity }} <span class="fa-solid fa-star"></span
-                ></small>
-              </div>
+              <p *ngFor="let product of products" class="card-text" style="text-align: center;">
+                {{ product.ID == cart.ProductID ? product.Name : "" }}                
+              </p>
+             <p> ID : {{ cart.ProductID}}</p>
+              <div class="d-flex justify-content-between align-items-center" >
+                <div class="btn-group" style="margin:0 auto;">
+                 </div>
+                 <small class="text-muted"
+                   >{{ cart.Price }} <span class="fa-solid fa-dollar"></span
+                 ></small>
+               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
+  </div>
+  <div style="text-align: center;" class="mb-5">
+  <a href="" class="btn btn-primary" >Complete Order
+    <span class="fa-solid fa-plus"></span>
+    </a>
   </div>

@@ -26,18 +26,23 @@
           >
   
             <div class="card-body">
-              <p class="card-text">{{ product.Name }}</p>
+              <p class="card-text" style="text-align: center;">{{ product.Name }}</p>
               <div class="d-flex justify-content-between align-items-center">
-                <div class="btn-group">
-                  <button type="button" class="btn btn-sm btn-outline-secondary">
-                    Add to Cart
-                  </button>
-                  <button type="button" class="btn btn-sm btn-outline-secondary">
-                    View Details
-                  </button>
+                <div class="btn-group" style="margin:0 auto;">
+                 <a href="add-one-item/{{product.ID}}" class="btn btn-primary">
+                 <span class="fa-solid fa-plus"></span>
+                 </a>
+                 <a href="delete-one-item/{{product.ID}}" class="btn btn-danger">
+                  <span class="fa-solid fa-minus"></span
+                    >
+                </a>
+                  <a href="" class="btn btn-outline-secondary">
+                    Details 
+                  </a>
+
                 </div>
                 <small class="text-muted"
-                  >{{ product.Price }} <span class="fa-solid fa-star"></span
+                  >{{ product.Price }} <span class="fa-solid fa-dollar"></span
                 ></small>
               </div>
             </div>

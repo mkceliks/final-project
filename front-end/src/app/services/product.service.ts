@@ -20,6 +20,15 @@ export class ProductService {
 
   }
 
+  getProductById(id: number): Observable<Product> {
+
+    let newPath = this.apiUrl + 'getProductById/' + id;
+
+    return this.httpClient.get<Product>(newPath);
+
+
+  }
+
   addProduct(product: Product): Observable<Product> {
       
       let newPath = this.apiUrl + 'addProduct';
