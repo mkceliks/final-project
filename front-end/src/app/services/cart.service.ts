@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Cart } from '../models/cart';
+import { Order } from '../models/order_details';
 @Injectable({
   providedIn: 'root'
 })
@@ -35,5 +36,26 @@ export class CartService {
         return this.httpClient.delete<Cart>(newPath);
 
       }
+
+
+      deleteCartRow(id:number): Observable<Cart> {
+
+        let newPath = this.apiUrl + 'deleteAllCart/' + id;
+
+        return this.httpClient.delete<Cart>(newPath);
+
+      }
+
+      orderComplete(order:Order) {
+          
+      let newPath = this.apiUrl + 'order';
+  
+      return this.httpClient.post(newPath,order);
+  
+        }
+
+
+
+      
 
 }

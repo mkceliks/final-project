@@ -1,0 +1,26 @@
+<div class="content py-lg-5" >
+    <br>
+      <div class="col-md-12 p-5">
+          <div class="card" >
+              <div style="text-align: center;" class="card-header">
+                  <h5 class="title">
+                      Welcome to Customer Add Form Page
+                  </h5>
+                  
+              </div>
+         </div>
+         <br>
+
+          <form [formGroup]="customerAddForm" class="row g-3 mb-3">
+
+              <div  class="col-md-6">
+                  <label for="UserName" class="form-label">Username</label>
+                  <input placeholder="UserName" type="text" class="form-control" name="UserName" id="UserName" formControlName="UserName" required>
+                </div>
+              <div style="text-align: center;" class="col-12">
+                <button class="btn btn-primary" (click)="addCustomer()">Add Customer to the system</button>
+              </div>
+            </form>
+
+      </div>
+  </div>

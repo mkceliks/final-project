@@ -27,7 +27,6 @@ export class AddProductComponent implements OnInit {
       Name: ['', Validators.required],
       Description: ['', Validators.required],
       Price: ['', Validators.required],
-      Discount: ['', Validators.required],
       Tax: ['', Validators.required],
     });
   }
@@ -36,7 +35,7 @@ export class AddProductComponent implements OnInit {
     if (this.productAddForm.valid) {
       let productModel = Object.assign({}, this.productAddForm.value);
       this.productService.addProduct(productModel).subscribe(data => {
-        console.log(data);
+        alert("Product added successfully");
       });
     } else {
       console.log('Form is not valid');

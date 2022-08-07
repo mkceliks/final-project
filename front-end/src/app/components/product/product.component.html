@@ -25,21 +25,16 @@
             class="card shadow-sm"
           >
   
-            <div class="card-body">
+            <div class="card-body"  >
               <p class="card-text" style="text-align: center;">{{ product.Name }}</p>
-              <div class="d-flex justify-content-between align-items-center">
-                <div class="btn-group" style="margin:0 auto;">
-                 <a href="add-one-item/{{product.ID}}" class="btn btn-primary">
-                 <span class="fa-solid fa-plus"></span>
-                 </a>
-                 <a href="delete-one-item/{{product.ID}}" class="btn btn-danger">
-                  <span class="fa-solid fa-minus"></span
-                    >
-                </a>
-                  <a href="" class="btn btn-outline-secondary">
-                    Details 
+              <div style="text-align: center;">
+                <a href="add-one-item/{{product.ID}}" class="btn btn-primary">
+                  Add To Cart <span class="fa-solid fa-plus"></span>
                   </a>
+              </div>
 
+              <div class="d-flex justify-content-between ">
+                <div class="btn-group" style="margin:0 auto;">
                 </div>
                 <small class="text-muted"
                   >{{ product.Price }} <span class="fa-solid fa-dollar"></span
