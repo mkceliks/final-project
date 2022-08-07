@@ -384,30 +384,185 @@ func DeleteOneItemFromCart(w http.ResponseWriter, r *http.Request) {
 func Order(w http.ResponseWriter, r *http.Request) {
 
 	if r.Method == "POST" {
-
 		w.Header().Set("Content-Type", "application/json")
 		var order_details models.OrderDetails
 		_ = json.NewDecoder(r.Body).Decode(&order_details)
-		result, err := db.DB.Exec("INSERT INTO order_details(customer_id,total_price) VALUES($1,$2)", order_details.CustomerID, order_details.TotalPrice)
+
+		rows, err := db.DB.Query("SELECT * FROM order_details WHERE customer_id = $1", order_details.CustomerID)
 		if err != nil {
+			if err == sql.ErrNoRows {
+				fmt.Println("No rows found")
+				return
+			}
 			log.Fatal(err)
 		}
-		count, err := result.RowsAffected()
-		if err != nil {
-			log.Fatal(count)
-		}
+		defer rows.Close()
 
-		table, err := db.DB.Exec("DELETE FROM cart") // Delete the cart items after the order is placed
-		if err != nil {
+		var curr_ordertable []*models.OrderDetails
+		for rows.Next() {
+			ord := &models.OrderDetails{}
+			err := rows.Scan(&ord.ID, &ord.CustomerID, &ord.TotalPrice)
+			if err != nil {
+				log.Fatal(err)
+			}
+			curr_ordertable = append(curr_ordertable, ord)
+		}
+		if err = rows.Err(); err != nil {
 			log.Fatal(err)
 		}
-		effect, err := table.RowsAffected()
-		if err != nil {
-			log.Fatal(effect)
+		var count_Arr []float32
+		for _, element := range curr_ordertable {
+			if element.TotalPrice > 100 {
+				count_Arr = append(count_Arr, element.TotalPrice)
+			}
 		}
+		if len(count_Arr) < 1 {
+			result, err := db.DB.Exec("INSERT INTO order_details(customer_id,total_price) VALUES($1,$2)", order_details.CustomerID, order_details.TotalPrice)
+			if err != nil {
+				log.Fatal(err)
+			}
+			count, err := result.RowsAffected()
+			if err != nil {
+				log.Fatal(count)
+			}
 
-		w.Write([]byte("Purchase successfull"))
+			table, err := db.DB.Exec("DELETE FROM cart") // Delete the cart items after the order is placed
+			if err != nil {
+				log.Fatal(err)
+			}
+			effect, err := table.RowsAffected()
+			if err != nil {
+				log.Fatal(effect)
+			}
 
+			w.Write([]byte("Purchase successfull"))
+
+		} else if len(count_Arr) >= 1 {
+
+			rows, err := db.DB.Query("SELECT * FROM cart WHERE total_discount > 0")
+			if err != nil {
+				if err == sql.ErrNoRows {
+					fmt.Println("No rows found")
+					return
+				}
+				log.Fatal(err)
+			}
+			defer rows.Close()
+
+			var curr_carttable []*models.Cart
+			for rows.Next() {
+				cart := &models.Cart{}
+				err := rows.Scan(&cart.ID, &cart.ProductID, &cart.Quantity, &cart.Price, &cart.Discount)
+				if err != nil {
+					log.Fatal(err)
+				}
+				curr_carttable = append(curr_carttable, cart)
+			}
+			if err = rows.Err(); err != nil {
+				log.Fatal(err)
+			}
+			var discount_Arr []float64
+
+			for _, element := range curr_carttable {
+				if element.Discount > 0 {
+					discount_Arr = append(discount_Arr, element.Discount)
+				}
+			}
+			if len(discount_Arr) < 1 {
+				discount := order_details.TotalPrice * 0.1 // 10% discount
+
+				result, err := db.DB.Exec("INSERT INTO order_details(customer_id,total_price) VALUES($1,$2)", order_details.CustomerID, order_details.TotalPrice-discount)
+				if err != nil {
+					log.Fatal(err)
+				}
+				count, err := result.RowsAffected()
+				if err != nil {
+					log.Fatal(count)
+				}
+
+				table, err := db.DB.Exec("DELETE FROM cart") // Delete the cart items after the order is placed
+				if err != nil {
+					log.Fatal(err)
+				}
+				effect, err := table.RowsAffected()
+				if err != nil {
+					log.Fatal(effect)
+				}
+
+				w.Write([]byte("Purchase successfull"))
+
+			} else if len(discount_Arr) >= 1 {
+
+				rows, err := db.DB.Query("SELECT * FROM cart")
+				if err != nil {
+					if err == sql.ErrNoRows {
+						fmt.Println("No rows found")
+						return
+					}
+					log.Fatal(err)
+				}
+				defer rows.Close()
+
+				var curr_carttable []*models.Cart
+				for rows.Next() {
+					cart := &models.Cart{}
+					err := rows.Scan(&cart.ID, &cart.ProductID, &cart.Quantity, &cart.Price, &cart.Discount)
+					if err != nil {
+						log.Fatal(err)
+					}
+					curr_carttable = append(curr_carttable, cart)
+				}
+				if err = rows.Err(); err != nil {
+					log.Fatal(err)
+				}
+
+				for index, element := range curr_carttable {
+
+					var product float64
+
+					err := db.DB.QueryRow("SELECT price FROM products WHERE id = $1", element.ProductID).Scan(&product) // Get the price of the product
+					switch {
+					case err == sql.ErrNoRows:
+						fmt.Println("No rows found")
+						return
+					case err != nil:
+						log.Fatal(err)
+					}
+
+					curr_carttable[index].Price = product * float64(curr_carttable[index].Quantity)
+					fmt.Printf("%+v\n", curr_carttable[index].Price)
+					fmt.Printf("%d\n", index)
+				}
+
+				for _, element := range curr_carttable {
+					var total_price float64
+					total_price += element.Price
+					fmt.Printf("%f\n", total_price)
+
+					discount := total_price * 0.1 // 10% discount
+
+					result, err := db.DB.Exec("INSERT INTO order_details(customer_id,total_price) VALUES($1,$2)", order_details.CustomerID, total_price-discount)
+					if err != nil {
+						log.Fatal(err)
+					}
+					count, err := result.RowsAffected()
+					if err != nil {
+						log.Fatal(count)
+					}
+				}
+
+				table, err := db.DB.Exec("DELETE FROM cart") // Delete the cart items after the order is placed
+				if err != nil {
+					log.Fatal(err)
+				}
+				effect, err := table.RowsAffected()
+				if err != nil {
+					log.Fatal(effect)
+				}
+
+				w.Write([]byte("Purchase successfull"))
+
+			}
+		}
 	}
-
 }
