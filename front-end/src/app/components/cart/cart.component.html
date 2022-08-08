@@ -65,11 +65,11 @@
         </div>
       </div>
     </div>
- <select class="form-control" formControlName="TotalPrice" name="TotalPrice" id="TotalPrice">
-  <option  value="{{totalPrice}}" >Accept the terms</option>
+ <select  class="form-control" formControlName="TotalPrice" name="TotalPrice" id="TotalPrice">
+  <option value="{{totalPrice}}" >Accept the terms</option>
  </select>
 
-    <div  style="text-align: center;" class="mb-5">
+    <div  style="text-align: center;margin-top: 50px;" class="mb-5">
       <button (click)="orderComplete()" class="btn btn-primary" >Complete Order with the price of {{ totalPrice }}
       </button>
       </div>
