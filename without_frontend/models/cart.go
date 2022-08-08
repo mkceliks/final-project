@@ -1,8 +1,9 @@
 package models
 
-type OrderItems struct {
+type Cart struct {
 	ID        int
-	OrderID   int
 	ProductID int
 	Quantity  int
+	Price     float64
+	Discount  float64
 }
