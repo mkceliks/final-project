@@ -28,26 +28,29 @@ In this project i used;
 - ```go get -u github.com/gorilla/mux```
 - ```go get github.com/rs/cors```
 - ```go get github.com/lib/pq```
+
+## 1.2 Run
+
 - ```go run main.go```
 
-## 1.2 Files
-### 1.2.1 main.go File
+## 1.3 Files
+### 1.3.1 main.go File
 
 This file includes the APIs.
 
-### 1.2.2 service/service.go File
+### 1.3.2 service/service.go File
 
 This file contains the functions that APIs run in the background.
 
-### 1.2.3 service/business.go File
+### 1.3.3 service/business.go File
 
 This file includes the some business logics of the system. ( Using this logics in the service.go file. )
 
-### 1.2.4 models Folder
+### 1.3.4 models Folder
 
 This folder includes the cart,customer,order_details,product struct models to modelize the tables of the database at the db connection.
 
-### 1.2.5 db.go File
+### 1.3.5 db.go File
 
 This file starts the connection with PostgreSQL and generates a global variable to use this connection in other files. And includes the constants needs for connection.
 
