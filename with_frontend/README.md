@@ -44,3 +44,10 @@ In the Angular front-end folder;
 
 ## Run ##
 - ```ng serve --open```
+
+# Example images
+<p align="center">
+  <img src="img/addproduct.PNG" width="1000" title="hover text">
+  <img src="img/cart.PNG" width="850" title="hover text">
+  <img src="img/dashboard.PNG" width="850" title="hover text">
+</p>
