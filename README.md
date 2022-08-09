@@ -95,4 +95,7 @@ This is a front-end side of the project that integrated APIs with services,model
 - ```npm install -g @angular/cli```
 - ```ng add @ng-bootstrap/ng-bootstrap```
 - ```npm i @fortawesome/fontawesome-free```
+
+## 3.2 Run
+
 - ```ng serve --open```
